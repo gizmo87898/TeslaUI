@@ -3,428 +3,415 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tesla Diagnostics UI Clone</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <style>
-      :root {
-        --bg: #000;
-        --panel: #0b0d11;
-        --panel-2: #090a0d;
-        --border: #1d2128;
-        --text: #f4f6fa;
-        --muted: #858b97;
-      }
-
-      * {
-        box-sizing: border-box;
+        --panel-bg: #f6f6f6;
+        --dark: #101217;
+        --soft-text: #8d8f95;
       }
 
       body {
         margin: 0;
         min-height: 100vh;
-        background: #0a0b0f;
-        color: var(--text);
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         display: grid;
         place-items: center;
+        background: radial-gradient(circle at 20% 20%, #bfd1e3, #596575 65%, #2e3440);
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      .tablet-shell {
+        width: min(1500px, 95vw);
+        aspect-ratio: 16 / 9;
+        border-radius: 38px;
+        padding: 18px;
+        background: linear-gradient(180deg, #0f1118, #181b24);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
       }
 
       .screen {
-        width: 1366px;
-        height: 768px;
-        max-width: 100vw;
-        max-height: 100vh;
-        background: #000;
-        border-radius: 12px;
+        height: 100%;
+        width: 100%;
+        background: #fff;
+        border-radius: 20px;
         overflow: hidden;
+        position: relative;
         display: grid;
-        grid-template-columns: 33% 67%;
-        grid-template-rows: 1fr 62px;
+        grid-template-columns: 41% 59%;
       }
 
-      .left {
-        background: linear-gradient(180deg, #12151b, #0f1117);
-        border-right: 1px solid var(--border);
+      .left-pane {
+        background: #f8f8f9;
+        border-right: 1px solid #dedfe2;
         position: relative;
       }
 
-      .gear {
+      .range {
         position: absolute;
-        top: 42px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 68px;
-        font-weight: 300;
-        letter-spacing: 0.02em;
-      }
-
-      .charge-line {
-        position: absolute;
-        top: 150px;
-        left: 14px;
-        right: 14px;
-        display: flex;
-        justify-content: space-between;
-        color: #737b88;
-        font-size: 19px;
-      }
-
-      .charge-bar {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .charge-bar .bar {
-        width: 62px;
-        height: 10px;
-        border-radius: 7px;
-        background: #6d727d;
-      }
-
-      .car-wrap {
-        position: absolute;
-        inset: 178px 0 116px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      .car-wrap img {
-        height: 320px;
-        width: auto;
-        object-fit: contain;
-        filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.42));
-      }
-
-      .pill {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        border: none;
-        color: #fff;
-        background: #232830;
-        border-radius: 999px;
-        font-size: 14px;
-        min-width: 92px;
-        height: 44px;
-      }
-
-      .pill.top {
-        top: 170px;
-      }
-
-      .pill.bottom {
-        bottom: 176px;
-      }
-
-      .bolt-side {
-        position: absolute;
-        left: 44px;
-        top: 448px;
-        width: 84px;
-        height: 44px;
-        border-radius: 999px;
-        border: none;
-        background: #232830;
-        color: #fff;
-        font-size: 21px;
-      }
-
-      .left-mid-icons {
-        position: absolute;
-        bottom: 126px;
-        left: 0;
-        right: 0;
-        display: flex;
-        justify-content: center;
-        gap: 84px;
-        color: #a9aeb8;
-        font-size: 28px;
-      }
-
-      .left-bottom-pill {
-        position: absolute;
-        bottom: 56px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 126px;
-        height: 42px;
-        border-radius: 999px;
-        border: none;
-        background: #232830;
-        color: #b4b8bf;
-        font-size: 25px;
-      }
-
-      .left-dots {
-        position: absolute;
-        bottom: 26px;
-        left: 50%;
-        transform: translateX(-50%);
-        color: #868d99;
-        letter-spacing: 0.35em;
-        font-size: 13px;
-      }
-
-      .right {
-        display: grid;
-        grid-template-rows: 36px 40px 1fr;
-        background: #000;
-      }
-
-      .top-status {
-        border-bottom: 1px solid #101319;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 12px;
-        font-size: 15px;
-      }
-
-      .top-center {
-        display: flex;
-        align-items: center;
-        gap: 24px;
-        font-weight: 500;
-      }
-
-      .svc-row {
-        border-bottom: 1px solid #131720;
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        padding: 6px 16px;
-      }
-
-      .svc-btn {
-        border: 1px solid #2a2f38;
-        background: #171b22;
-        color: #f4f6fa;
-        font-size: 12px;
-        height: 28px;
-        padding: 0 16px;
-      }
-
-      .workspace {
-        display: grid;
-        grid-template-columns: 98px 1fr;
-        min-height: 0;
-      }
-
-      .left-nav {
-        border-right: 1px solid #131720;
-        padding-top: 16px;
-      }
-
-      .left-nav .item {
-        height: 54px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #7e8592;
-        font-size: 17px;
-      }
-
-      .left-nav .item.active {
-        color: #fff;
-        font-weight: 600;
-      }
-
-      .main {
-        display: grid;
-        grid-template-rows: 52px 1fr;
-        min-height: 0;
-      }
-
-      .tabs {
-        border-bottom: 1px solid #20232a;
+        top: 16px;
+        right: 22px;
+        color: #61646b;
+        font-size: 1.5rem;
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 0 14px;
       }
 
-      .tab {
-        border: none;
-        background: transparent;
-        color: #fff;
-        font-size: 14px;
-        height: 34px;
-        padding: 0 6px;
+      .battery {
+        width: 42px;
+        height: 16px;
+        border: 2px solid #9a9ca1;
+        border-radius: 3px;
+        position: relative;
       }
 
-      .tab.active {
-        background: #fff;
-        color: #000;
-        padding: 0 16px;
-        border-radius: 2px;
+      .battery::after {
+        content: "";
+        position: absolute;
+        right: -5px;
+        top: 4px;
+        width: 3px;
+        height: 6px;
+        border-radius: 1px;
+        background: #9a9ca1;
       }
 
-      .content {
-        overflow: auto;
-        padding: 12px 18px 18px;
-        text-align: center;
-        font-size: 23px;
-        line-height: 1.65;
-      }
-
-      .bottom {
-        grid-column: 1 / -1;
-        background: #000;
-        border-top: 1px solid #161a22;
-        display: grid;
-        grid-template-columns: 33% 34% 33%;
-        align-items: center;
-      }
-
-      .bottom-left,
-      .bottom-center,
-      .bottom-right {
+      .car-zone {
+        position: absolute;
+        inset: 70px 20px 120px;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 62px;
-        color: #dbe0ea;
-        font-size: 33px;
       }
 
-      .bottom-center {
-        gap: 22px;
-        color: #9ea4af;
+      .car-zone img {
+        max-width: 88%;
+        filter: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.22));
       }
 
-      .temp {
-        font-size: 42px;
-        color: #8d939f;
+      .status-label {
+        position: absolute;
+        font-size: 1.2rem;
+        letter-spacing: 0.12em;
+        color: #72757c;
+        text-transform: uppercase;
       }
 
-      button {
-        cursor: default;
+      .status-label strong {
+        color: #2e3138;
+        display: block;
+        letter-spacing: 0.08em;
       }
 
-      @media (max-width: 1366px) {
+      .label-frunk {
+        left: 50px;
+        top: 270px;
+      }
+
+      .label-trunk {
+        right: 70px;
+        top: 80px;
+      }
+
+      .label-lock {
+        top: 108px;
+        left: 52%;
+        transform: translateX(-50%);
+        color: #545861;
+      }
+
+      .bottom-tabs,
+      .climate-strip {
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .bottom-tabs {
+        bottom: 0;
+        height: 78px;
+        border-top: 1px solid #e1e3e7;
+        padding: 0 36px;
+        justify-content: space-between;
+        background: #f8f8f9;
+      }
+
+      .tab-btn {
+        border: 0;
+        background: transparent;
+        color: #4a4d55;
+        font-size: 2rem;
+        opacity: 0.9;
+      }
+
+      .climate-strip {
+        bottom: 78px;
+        height: 74px;
+        border-top: 1px solid #eceef1;
+        background: rgba(250, 250, 251, 0.97);
+        padding: 0 22px;
+        justify-content: space-between;
+        color: #767983;
+      }
+
+      .climate-mid {
+        font-size: 2.9rem;
+        color: #9ea1a8;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .climate-temp {
+        color: #8f929a;
+      }
+
+      .map-pane {
+        position: relative;
+        background: #e6e6e6;
+      }
+
+      .map-pane iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .top-status {
+        position: absolute;
+        top: 10px;
+        left: 16px;
+        right: 18px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.95rem;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      .navigate-card {
+        position: absolute;
+        top: 70px;
+        left: 18px;
+        background: rgba(245, 245, 246, 0.94);
+        width: 370px;
+        border-radius: 12px;
+        padding: 14px 18px;
+        color: #565a61;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.9rem;
+        backdrop-filter: blur(2px);
+      }
+
+      .zoom-controls {
+        position: absolute;
+        top: 110px;
+        right: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .zoom-controls button,
+      .side-controls button {
+        width: 54px;
+        height: 54px;
+        border: 0;
+        border-radius: 12px;
+        background: rgba(246, 246, 246, 0.9);
+        color: #60636a;
+        font-size: 1.5rem;
+      }
+
+      .side-controls {
+        position: absolute;
+        bottom: 160px;
+        right: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .media-panel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 78px;
+        height: 155px;
+        background: rgba(251, 251, 252, 0.95);
+        border-top: 1px solid #dcdde1;
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 18px;
+        align-items: center;
+        padding: 12px 18px;
+      }
+
+      .album-art {
+        width: 100px;
+        height: 100px;
+        border-radius: 4px;
+        object-fit: cover;
+      }
+
+      .media-text .title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #20232a;
+      }
+
+      .media-text .artist,
+      .media-text .album {
+        color: #767a83;
+        font-size: 1.3rem;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .controls .btn {
+        border: none;
+        background: transparent;
+        color: #24272f;
+        font-size: 1.55rem;
+      }
+
+      .progress-wrap {
+        margin-top: 8px;
+      }
+
+      .progress {
+        height: 4px;
+        background: #d5d7db;
+      }
+
+      .progress-bar {
+        width: 28%;
+      }
+
+      @media (max-width: 1200px) {
         .screen {
-          border-radius: 0;
+          grid-template-columns: 1fr;
+        }
+
+        .left-pane {
+          display: none;
         }
       }
     </style>
   </head>
   <body>
-    <main class="screen" aria-label="Tesla diagnostic UI clone">
-      <section class="left">
-        <div class="gear">P</div>
-        <div class="charge-line">
-          <span>Woof</span>
-          <span class="charge-bar">---- % <span class="bar"></span></span>
-        </div>
-
-        <button class="pill top">OPEN</button>
-        <div class="car-wrap">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Tesla_Model_3_parked%2C_front_driver_side.jpg/512px-Tesla_Model_3_parked%2C_front_driver_side.jpg" alt="Car placeholder" />
-        </div>
-        <button class="bolt-side" aria-label="Charge"><i class="bi bi-lightning-charge-fill"></i></button>
-        <button class="pill bottom">OPEN</button>
-
-        <div class="left-mid-icons">
-          <i class="bi bi-record-circle"></i>
-          <i class="bi bi-lightning-fill"></i>
-          <i class="bi bi-mic-fill"></i>
-        </div>
-        <button class="left-bottom-pill"><i class="bi bi-wind"></i></button>
-        <div class="left-dots">● ○ ●</div>
-      </section>
-
-      <section class="right">
-        <header class="top-status">
-          <span><i class="bi bi-phone"></i></span>
-          <div class="top-center">
-            <span>20:58</span>
-            <span>--- </span>
-            <span><i class="bi bi-tesla"></i></span>
+    <div class="tablet-shell">
+      <div class="screen">
+        <section class="left-pane">
+          <div class="range">
+            175 km
+            <span class="battery"></span>
           </div>
-          <span><i class="bi bi-person"></i> Profile &nbsp; <i class="bi bi-exclamation-circle text-danger"></i> &nbsp; <i class="bi bi-bluetooth"></i> &nbsp; <i class="bi bi-soundwave"></i></span>
-        </header>
 
-        <div class="svc-row">
-          <button class="svc-btn">IN SERVICE</button>
-          <button class="svc-btn">EXIT DIAGNOSTIC MODE AND RESTART</button>
-        </div>
+          <div class="car-zone">
+            <img
+              src="https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=900&q=80"
+              alt="Generic white electric car"
+            />
+          </div>
 
-        <div class="workspace">
-          <aside class="left-nav">
-            <div class="item active">DATA</div>
-            <div class="item">CAN</div>
-            <div class="item">ODIN</div>
-            <div class="item">MODEL 3</div>
-            <div class="item">SETTINGS</div>
-            <div class="item">ACTIONS</div>
-            <div class="item">APPS</div>
-          </aside>
-          <div class="main">
-            <div class="tabs">
-              <button class="tab active">Basic CFG</button>
-              <button class="tab">UI</button>
-              <button class="tab">DAS</button>
-              <button class="tab">HV</button>
-              <button class="tab">Charge</button>
-              <button class="tab">FC</button>
-              <button class="tab">PT Thermal</button>
-              <button class="tab">HVAC</button>
-              <button class="tab">Versions</button>
-              <button class="tab">TAS</button>
+          <div class="status-label label-lock"><i class="bi bi-unlock"></i></div>
+          <div class="status-label label-frunk">FRUNK <strong>OPEN</strong></div>
+          <div class="status-label label-trunk">TRUNK <strong>OPEN</strong></div>
+
+          <div class="climate-strip">
+            <button class="tab-btn" aria-label="Left seat"><i class="bi bi-thermometer-sun"></i></button>
+            <button class="tab-btn" aria-label="Fan"><i class="bi bi-fan"></i></button>
+            <div class="climate-mid">
+              <i class="bi bi-chevron-left"></i>
+              <span class="climate-temp">21.0°</span>
+              <i class="bi bi-chevron-right"></i>
             </div>
-            <div class="content">
-              <div>Vehicle</div>
-              <div>Vin: 1234</div>
-              <div>Car Type 3: ??</div>
-              <div>Birthday: Wed Dec 31 16:00:00 1969</div>
-              <div>Car Version: develop-2019.20.4.2-7-66625e9323</div>
-              <div>Car Computer: ice</div>
-              <div>SOE / USOE: ??, ?? %</div>
-              <div>SOC: ?? %</div>
-              <div>Ideal energy remaining: ?? kWh</div>
-              <div>Range: ?? miles</div>
-              <div>Odometer: ?? miles</div>
-              <div>Gear: ??</div>
-              <div>Speed: ?? mph</div>
-              <div>Local Time: Tue May 26 20:58:15 2020</div>
-              <div>UTC Offset: ??</div>
-              <div>Timezone: ??</div>
-              <div>BMS State: --</div>
-              <div>12V Battery Voltage: ?? v</div>
-              <div>12V Battery Current: ?? A</div>
-              <div>Locked?: ??</div>
+            <button class="tab-btn" aria-label="Seat"><i class="bi bi-seat-recline"></i></button>
+            <button class="tab-btn" aria-label="Defrost"><i class="bi bi-wind"></i></button>
+            <button class="tab-btn" aria-label="Rear defrost"><i class="bi bi-moisture"></i></button>
+            <button class="tab-btn" aria-label="Volume"><i class="bi bi-volume-up"></i></button>
+          </div>
+
+          <div class="bottom-tabs">
+            <button class="tab-btn" aria-label="Car"><i class="bi bi-car-front"></i></button>
+            <button class="tab-btn" aria-label="Music"><i class="bi bi-music-note"></i></button>
+            <button class="tab-btn" aria-label="Camera"><i class="bi bi-record-circle"></i></button>
+            <button class="tab-btn" aria-label="Wiper"><i class="bi bi-droplet-half"></i></button>
+            <button class="tab-btn" aria-label="Chevron"><i class="bi bi-chevron-up-square"></i></button>
+          </div>
+        </section>
+
+        <section class="map-pane">
+          <iframe
+            title="Google Maps"
+            src="https://www.google.com/maps?q=Arganda+del+Rey,+Madrid&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+
+          <div class="top-status">
+            <span><i class="bi bi-r-square"></i>17:13 &nbsp; 13°C</span>
+            <span>
+              <i class="bi bi-bell"></i>
+              <i class="bi bi-person"></i>
+              <i class="bi bi-exclamation-triangle"></i>
+              <i class="bi bi-camera"></i>
+              <i class="bi bi-bluetooth"></i>
+            </span>
+          </div>
+
+          <div class="navigate-card">
+            <span><i class="bi bi-send"></i> &nbsp; Navigate</span>
+            <i class="bi bi-chevron-right"></i>
+          </div>
+
+          <div class="zoom-controls">
+            <button aria-label="Layers"><i class="bi bi-layers"></i></button>
+            <button aria-label="Zoom in"><i class="bi bi-plus"></i></button>
+            <button aria-label="Zoom out"><i class="bi bi-dash"></i></button>
+          </div>
+
+          <div class="side-controls">
+            <button aria-label="Compass"><i class="bi bi-compass"></i></button>
+            <button aria-label="Settings"><i class="bi bi-sliders"></i></button>
+            <button aria-label="Road"><i class="bi bi-signpost"></i></button>
+          </div>
+
+          <div class="media-panel">
+            <img
+              class="album-art"
+              src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=250&q=80"
+              alt="Album art placeholder"
+            />
+            <div class="media-text">
+              <div class="small text-secondary">◎ generic-radio</div>
+              <div class="title">Midnight Drive</div>
+              <div class="artist">Sample Artist &nbsp;&nbsp; <span class="album">Roadside Sessions</span></div>
+              <div class="progress-wrap">
+                <div class="progress">
+                  <div class="progress-bar bg-dark" role="progressbar"></div>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mt-1">
+                  <span>1:12</span><span>-3:23</span>
+                </div>
+              </div>
+            </div>
+            <div class="controls">
+              <button class="btn" aria-label="Previous"><i class="bi bi-skip-backward-fill"></i></button>
+              <button class="btn" aria-label="Play"><i class="bi bi-pause-fill"></i></button>
+              <button class="btn" aria-label="Next"><i class="bi bi-skip-forward-fill"></i></button>
+              <button class="btn" aria-label="Like"><i class="bi bi-heart"></i></button>
+              <button class="btn" aria-label="Shuffle"><i class="bi bi-shuffle"></i></button>
+              <button class="btn" aria-label="Repeat"><i class="bi bi-repeat"></i></button>
             </div>
           </div>
-        </div>
-      </section>
-
-      <footer class="bottom">
-        <div class="bottom-left">
-          <button class="tab" aria-label="Car"><i class="bi bi-car-front"></i></button>
-          <button class="tab" aria-label="Music"><i class="bi bi-music-note"></i></button>
-          <button class="tab" aria-label="Up"><i class="bi bi-chevron-up-square"></i></button>
-        </div>
-        <div class="bottom-center">
-          <i class="bi bi-fan"></i>
-          <i class="bi bi-chevron-left"></i>
-          <span class="temp">21.0°</span>
-          <i class="bi bi-chevron-right"></i>
-        </div>
-        <div class="bottom-right">
-          <button class="tab" aria-label="Defrost"><i class="bi bi-wind"></i></button>
-          <button class="tab" aria-label="Rear defrost"><i class="bi bi-moisture"></i></button>
-          <button class="tab" aria-label="Volume"><i class="bi bi-volume-up"></i></button>
-        </div>
-      </footer>
-    </main>
+        </section>
+      </div>
+    </div>
   </body>
 </html>
