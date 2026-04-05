@@ -24,6 +24,9 @@
 
       * {
         box-sizing: border-box;
+        --panel-bg: #f6f6f6;
+        --dark: #101217;
+        --soft-text: #8d8f95;
       }
 
       body {
@@ -353,6 +356,295 @@
 
       button {
         cursor: default;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at 20% 20%, #bfd1e3, #596575 65%, #2e3440);
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      }
+
+      .tablet-shell {
+        width: min(1500px, 95vw);
+        aspect-ratio: 16 / 9;
+        border-radius: 38px;
+        padding: 18px;
+        background: linear-gradient(180deg, #0f1118, #181b24);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+      }
+
+      .screen {
+        height: 100%;
+        width: 100%;
+        background: #fff;
+        border-radius: 20px;
+        overflow: hidden;
+        position: relative;
+        display: grid;
+        grid-template-columns: 41% 59%;
+      }
+
+      .left-pane {
+        background: #f8f8f9;
+        border-right: 1px solid #dedfe2;
+        position: relative;
+      }
+
+      .range {
+        position: absolute;
+        top: 16px;
+        right: 22px;
+        color: #61646b;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .battery {
+        width: 42px;
+        height: 16px;
+        border: 2px solid #9a9ca1;
+        border-radius: 3px;
+        position: relative;
+      }
+
+      .battery::after {
+        content: "";
+        position: absolute;
+        right: -5px;
+        top: 4px;
+        width: 3px;
+        height: 6px;
+        border-radius: 1px;
+        background: #9a9ca1;
+      }
+
+      .car-zone {
+        position: absolute;
+        inset: 70px 20px 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .car-zone img {
+        max-width: 88%;
+        filter: drop-shadow(0 22px 18px rgba(0, 0, 0, 0.22));
+      }
+
+      .status-label {
+        position: absolute;
+        font-size: 1.2rem;
+        letter-spacing: 0.12em;
+        color: #72757c;
+        text-transform: uppercase;
+      }
+
+      .status-label strong {
+        color: #2e3138;
+        display: block;
+        letter-spacing: 0.08em;
+      }
+
+      .label-frunk {
+        left: 50px;
+        top: 270px;
+      }
+
+      .label-trunk {
+        right: 70px;
+        top: 80px;
+      }
+
+      .label-lock {
+        top: 108px;
+        left: 52%;
+        transform: translateX(-50%);
+        color: #545861;
+      }
+
+      .bottom-tabs,
+      .climate-strip {
+        position: absolute;
+        left: 0;
+        right: 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .bottom-tabs {
+        bottom: 0;
+        height: 78px;
+        border-top: 1px solid #e1e3e7;
+        padding: 0 36px;
+        justify-content: space-between;
+        background: #f8f8f9;
+      }
+
+      .tab-btn {
+        border: 0;
+        background: transparent;
+        color: #4a4d55;
+        font-size: 2rem;
+        opacity: 0.9;
+      }
+
+      .climate-strip {
+        bottom: 78px;
+        height: 74px;
+        border-top: 1px solid #eceef1;
+        background: rgba(250, 250, 251, 0.97);
+        padding: 0 22px;
+        justify-content: space-between;
+        color: #767983;
+      }
+
+      .climate-mid {
+        font-size: 2.9rem;
+        color: #9ea1a8;
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .climate-temp {
+        color: #8f929a;
+      }
+
+      .map-pane {
+        position: relative;
+        background: #e6e6e6;
+      }
+
+      .map-pane iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .top-status {
+        position: absolute;
+        top: 10px;
+        left: 16px;
+        right: 18px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.95rem;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      }
+
+      .navigate-card {
+        position: absolute;
+        top: 70px;
+        left: 18px;
+        background: rgba(245, 245, 246, 0.94);
+        width: 370px;
+        border-radius: 12px;
+        padding: 14px 18px;
+        color: #565a61;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.9rem;
+        backdrop-filter: blur(2px);
+      }
+
+      .zoom-controls {
+        position: absolute;
+        top: 110px;
+        right: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .zoom-controls button,
+      .side-controls button {
+        width: 54px;
+        height: 54px;
+        border: 0;
+        border-radius: 12px;
+        background: rgba(246, 246, 246, 0.9);
+        color: #60636a;
+        font-size: 1.5rem;
+      }
+
+      .side-controls {
+        position: absolute;
+        bottom: 160px;
+        right: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .media-panel {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 78px;
+        height: 155px;
+        background: rgba(251, 251, 252, 0.95);
+        border-top: 1px solid #dcdde1;
+        display: grid;
+        grid-template-columns: 100px 1fr auto;
+        gap: 18px;
+        align-items: center;
+        padding: 12px 18px;
+      }
+
+      .album-art {
+        width: 100px;
+        height: 100px;
+        border-radius: 4px;
+        object-fit: cover;
+      }
+
+      .media-text .title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #20232a;
+      }
+
+      .media-text .artist,
+      .media-text .album {
+        color: #767a83;
+        font-size: 1.3rem;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .controls .btn {
+        border: none;
+        background: transparent;
+        color: #24272f;
+        font-size: 1.55rem;
+      }
+
+      .progress-wrap {
+        margin-top: 8px;
+      }
+
+      .progress {
+        height: 4px;
+        background: #d5d7db;
+      }
+
+      .progress-bar {
+        width: 28%;
+      }
+
+      @media (max-width: 1200px) {
+        .screen {
+          grid-template-columns: 1fr;
+        }
+
+        .left-pane {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -471,5 +763,114 @@
         </div>
       </footer>
     </main>
+    <div class="tablet-shell">
+      <div class="screen">
+        <section class="left-pane">
+          <div class="range">
+            175 km
+            <span class="battery"></span>
+          </div>
+
+          <div class="car-zone">
+            <img
+              src="https://images.unsplash.com/photo-1550355291-bbee04a92027?auto=format&fit=crop&w=900&q=80"
+              alt="Generic white electric car"
+            />
+          </div>
+
+          <div class="status-label label-lock"><i class="bi bi-unlock"></i></div>
+          <div class="status-label label-frunk">FRUNK <strong>OPEN</strong></div>
+          <div class="status-label label-trunk">TRUNK <strong>OPEN</strong></div>
+
+          <div class="climate-strip">
+            <button class="tab-btn" aria-label="Left seat"><i class="bi bi-thermometer-sun"></i></button>
+            <button class="tab-btn" aria-label="Fan"><i class="bi bi-fan"></i></button>
+            <div class="climate-mid">
+              <i class="bi bi-chevron-left"></i>
+              <span class="climate-temp">21.0°</span>
+              <i class="bi bi-chevron-right"></i>
+            </div>
+            <button class="tab-btn" aria-label="Seat"><i class="bi bi-seat-recline"></i></button>
+            <button class="tab-btn" aria-label="Defrost"><i class="bi bi-wind"></i></button>
+            <button class="tab-btn" aria-label="Rear defrost"><i class="bi bi-moisture"></i></button>
+            <button class="tab-btn" aria-label="Volume"><i class="bi bi-volume-up"></i></button>
+          </div>
+
+          <div class="bottom-tabs">
+            <button class="tab-btn" aria-label="Car"><i class="bi bi-car-front"></i></button>
+            <button class="tab-btn" aria-label="Music"><i class="bi bi-music-note"></i></button>
+            <button class="tab-btn" aria-label="Camera"><i class="bi bi-record-circle"></i></button>
+            <button class="tab-btn" aria-label="Wiper"><i class="bi bi-droplet-half"></i></button>
+            <button class="tab-btn" aria-label="Chevron"><i class="bi bi-chevron-up-square"></i></button>
+          </div>
+        </section>
+
+        <section class="map-pane">
+          <iframe
+            title="Google Maps"
+            src="https://www.google.com/maps?q=Arganda+del+Rey,+Madrid&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+
+          <div class="top-status">
+            <span><i class="bi bi-r-square"></i>17:13 &nbsp; 13°C</span>
+            <span>
+              <i class="bi bi-bell"></i>
+              <i class="bi bi-person"></i>
+              <i class="bi bi-exclamation-triangle"></i>
+              <i class="bi bi-camera"></i>
+              <i class="bi bi-bluetooth"></i>
+            </span>
+          </div>
+
+          <div class="navigate-card">
+            <span><i class="bi bi-send"></i> &nbsp; Navigate</span>
+            <i class="bi bi-chevron-right"></i>
+          </div>
+
+          <div class="zoom-controls">
+            <button aria-label="Layers"><i class="bi bi-layers"></i></button>
+            <button aria-label="Zoom in"><i class="bi bi-plus"></i></button>
+            <button aria-label="Zoom out"><i class="bi bi-dash"></i></button>
+          </div>
+
+          <div class="side-controls">
+            <button aria-label="Compass"><i class="bi bi-compass"></i></button>
+            <button aria-label="Settings"><i class="bi bi-sliders"></i></button>
+            <button aria-label="Road"><i class="bi bi-signpost"></i></button>
+          </div>
+
+          <div class="media-panel">
+            <img
+              class="album-art"
+              src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=250&q=80"
+              alt="Album art placeholder"
+            />
+            <div class="media-text">
+              <div class="small text-secondary">◎ generic-radio</div>
+              <div class="title">Midnight Drive</div>
+              <div class="artist">Sample Artist &nbsp;&nbsp; <span class="album">Roadside Sessions</span></div>
+              <div class="progress-wrap">
+                <div class="progress">
+                  <div class="progress-bar bg-dark" role="progressbar"></div>
+                </div>
+                <div class="d-flex justify-content-between small text-secondary mt-1">
+                  <span>1:12</span><span>-3:23</span>
+                </div>
+              </div>
+            </div>
+            <div class="controls">
+              <button class="btn" aria-label="Previous"><i class="bi bi-skip-backward-fill"></i></button>
+              <button class="btn" aria-label="Play"><i class="bi bi-pause-fill"></i></button>
+              <button class="btn" aria-label="Next"><i class="bi bi-skip-forward-fill"></i></button>
+              <button class="btn" aria-label="Like"><i class="bi bi-heart"></i></button>
+              <button class="btn" aria-label="Shuffle"><i class="bi bi-shuffle"></i></button>
+              <button class="btn" aria-label="Repeat"><i class="bi bi-repeat"></i></button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
   </body>
 </html>
