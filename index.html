@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tesla Diagnostics UI Clone</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <style>
+      :root {
+        --bg: #000;
+        --panel: #0b0d11;
+        --panel-2: #090a0d;
+        --border: #1d2128;
+        --text: #f4f6fa;
+        --muted: #858b97;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #0a0b0f;
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        display: grid;
+        place-items: center;
+      }
+
+      .screen {
+        width: 1366px;
+        height: 768px;
+        max-width: 100vw;
+        max-height: 100vh;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 33% 67%;
+        grid-template-rows: 1fr 62px;
+      }
+
+      .left {
+        background: linear-gradient(180deg, #12151b, #0f1117);
+        border-right: 1px solid var(--border);
+        position: relative;
+      }
+
+      .gear {
+        position: absolute;
+        top: 42px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 68px;
+        font-weight: 300;
+        letter-spacing: 0.02em;
+      }
+
+      .charge-line {
+        position: absolute;
+        top: 150px;
+        left: 14px;
+        right: 14px;
+        display: flex;
+        justify-content: space-between;
+        color: #737b88;
+        font-size: 19px;
+      }
+
+      .charge-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .charge-bar .bar {
+        width: 62px;
+        height: 10px;
+        border-radius: 7px;
+        background: #6d727d;
+      }
+
+      .car-wrap {
+        position: absolute;
+        inset: 178px 0 116px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .car-wrap img {
+        height: 320px;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.42));
+      }
+
+      .pill {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        border: none;
+        color: #fff;
+        background: #232830;
+        border-radius: 999px;
+        font-size: 14px;
+        min-width: 92px;
+        height: 44px;
+      }
+
+      .pill.top {
+        top: 170px;
+      }
+
+      .pill.bottom {
+        bottom: 176px;
+      }
+
+      .bolt-side {
+        position: absolute;
+        left: 44px;
+        top: 448px;
+        width: 84px;
+        height: 44px;
+        border-radius: 999px;
+        border: none;
+        background: #232830;
+        color: #fff;
+        font-size: 21px;
+      }
+
+      .left-mid-icons {
+        position: absolute;
+        bottom: 126px;
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 84px;
+        color: #a9aeb8;
+        font-size: 28px;
+      }
+
+      .left-bottom-pill {
+        position: absolute;
+        bottom: 56px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 126px;
+        height: 42px;
+        border-radius: 999px;
+        border: none;
+        background: #232830;
+        color: #b4b8bf;
+        font-size: 25px;
+      }
+
+      .left-dots {
+        position: absolute;
+        bottom: 26px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #868d99;
+        letter-spacing: 0.35em;
+        font-size: 13px;
+      }
+
+      .right {
+        display: grid;
+        grid-template-rows: 36px 40px 1fr;
+        background: #000;
+      }
+
+      .top-status {
+        border-bottom: 1px solid #101319;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 12px;
+        font-size: 15px;
+      }
+
+      .top-center {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        font-weight: 500;
+      }
+
+      .svc-row {
+        border-bottom: 1px solid #131720;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 6px 16px;
+      }
+
+      .svc-btn {
+        border: 1px solid #2a2f38;
+        background: #171b22;
+        color: #f4f6fa;
+        font-size: 12px;
+        height: 28px;
+        padding: 0 16px;
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 98px 1fr;
+        min-height: 0;
+      }
+
+      .left-nav {
+        border-right: 1px solid #131720;
+        padding-top: 16px;
+      }
+
+      .left-nav .item {
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #7e8592;
+        font-size: 17px;
+      }
+
+      .left-nav .item.active {
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .main {
+        display: grid;
+        grid-template-rows: 52px 1fr;
+        min-height: 0;
+      }
+
+      .tabs {
+        border-bottom: 1px solid #20232a;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 14px;
+      }
+
+      .tab {
+        border: none;
+        background: transparent;
+        color: #fff;
+        font-size: 14px;
+        height: 34px;
+        padding: 0 6px;
+      }
+
+      .tab.active {
+        background: #fff;
+        color: #000;
+        padding: 0 16px;
+        border-radius: 2px;
+      }
+
+      .content {
+        overflow: auto;
+        padding: 12px 18px 18px;
+        text-align: center;
+        font-size: 23px;
+        line-height: 1.65;
+      }
+
+      .bottom {
+        grid-column: 1 / -1;
+        background: #000;
+        border-top: 1px solid #161a22;
+        display: grid;
+        grid-template-columns: 33% 34% 33%;
+        align-items: center;
+      }
+
+      .bottom-left,
+      .bottom-center,
+      .bottom-right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 62px;
+        color: #dbe0ea;
+        font-size: 33px;
+      }
+
+      .bottom-center {
+        gap: 22px;
+        color: #9ea4af;
+      }
+
+      .temp {
+        font-size: 42px;
+        color: #8d939f;
+      }
+
+      button {
+        cursor: default;
+      }
+
+      @media (max-width: 1366px) {
+        .screen {
+          border-radius: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="screen" aria-label="Tesla diagnostic UI clone">
+      <section class="left">
+        <div class="gear">P</div>
+        <div class="charge-line">
+          <span>Woof</span>
+          <span class="charge-bar">---- % <span class="bar"></span></span>
+        </div>
+
+        <button class="pill top">OPEN</button>
+        <div class="car-wrap">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Tesla_Model_3_parked%2C_front_driver_side.jpg/512px-Tesla_Model_3_parked%2C_front_driver_side.jpg" alt="Car placeholder" />
+        </div>
+        <button class="bolt-side" aria-label="Charge"><i class="bi bi-lightning-charge-fill"></i></button>
+        <button class="pill bottom">OPEN</button>
+
+        <div class="left-mid-icons">
+          <i class="bi bi-record-circle"></i>
+          <i class="bi bi-lightning-fill"></i>
+          <i class="bi bi-mic-fill"></i>
+        </div>
+        <button class="left-bottom-pill"><i class="bi bi-wind"></i></button>
+        <div class="left-dots">● ○ ●</div>
+      </section>
+
+      <section class="right">
+        <header class="top-status">
+          <span><i class="bi bi-phone"></i></span>
+          <div class="top-center">
+            <span>20:58</span>
+            <span>--- </span>
+            <span><i class="bi bi-tesla"></i></span>
+          </div>
+          <span><i class="bi bi-person"></i> Profile &nbsp; <i class="bi bi-exclamation-circle text-danger"></i> &nbsp; <i class="bi bi-bluetooth"></i> &nbsp; <i class="bi bi-soundwave"></i></span>
+        </header>
+
+        <div class="svc-row">
+          <button class="svc-btn">IN SERVICE</button>
+          <button class="svc-btn">EXIT DIAGNOSTIC MODE AND RESTART</button>
+        </div>
+
+        <div class="workspace">
+          <aside class="left-nav">
+            <div class="item active">DATA</div>
+            <div class="item">CAN</div>
+            <div class="item">ODIN</div>
+            <div class="item">MODEL 3</div>
+            <div class="item">SETTINGS</div>
+            <div class="item">ACTIONS</div>
+            <div class="item">APPS</div>
+          </aside>
+          <div class="main">
+            <div class="tabs">
+              <button class="tab active">Basic CFG</button>
+              <button class="tab">UI</button>
+              <button class="tab">DAS</button>
+              <button class="tab">HV</button>
+              <button class="tab">Charge</button>
+              <button class="tab">FC</button>
+              <button class="tab">PT Thermal</button>
+              <button class="tab">HVAC</button>
+              <button class="tab">Versions</button>
+              <button class="tab">TAS</button>
+            </div>
+            <div class="content">
+              <div>Vehicle</div>
+              <div>Vin: 1234</div>
+              <div>Car Type 3: ??</div>
+              <div>Birthday: Wed Dec 31 16:00:00 1969</div>
+              <div>Car Version: develop-2019.20.4.2-7-66625e9323</div>
+              <div>Car Computer: ice</div>
+              <div>SOE / USOE: ??, ?? %</div>
+              <div>SOC: ?? %</div>
+              <div>Ideal energy remaining: ?? kWh</div>
+              <div>Range: ?? miles</div>
+              <div>Odometer: ?? miles</div>
+              <div>Gear: ??</div>
+              <div>Speed: ?? mph</div>
+              <div>Local Time: Tue May 26 20:58:15 2020</div>
+              <div>UTC Offset: ??</div>
+              <div>Timezone: ??</div>
+              <div>BMS State: --</div>
+              <div>12V Battery Voltage: ?? v</div>
+              <div>12V Battery Current: ?? A</div>
+              <div>Locked?: ??</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="bottom">
+        <div class="bottom-left">
+          <button class="tab" aria-label="Car"><i class="bi bi-car-front"></i></button>
+          <button class="tab" aria-label="Music"><i class="bi bi-music-note"></i></button>
+          <button class="tab" aria-label="Up"><i class="bi bi-chevron-up-square"></i></button>
+        </div>
+        <div class="bottom-center">
+          <i class="bi bi-fan"></i>
+          <i class="bi bi-chevron-left"></i>
+          <span class="temp">21.0°</span>
+          <i class="bi bi-chevron-right"></i>
+        </div>
+        <div class="bottom-right">
+          <button class="tab" aria-label="Defrost"><i class="bi bi-wind"></i></button>
+          <button class="tab" aria-label="Rear defrost"><i class="bi bi-moisture"></i></button>
+          <button class="tab" aria-label="Volume"><i class="bi bi-volume-up"></i></button>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
